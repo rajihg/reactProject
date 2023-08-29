@@ -52,11 +52,6 @@ export default function Admin() {
         setFilterFn,
       } = useTaskContext();
 
-    // const [recordForEdit, setRecordForEdit] = useState(null)
-    // const [records, setRecords] = useState(taskService.getAllTasks())
-    // const [filterFn, setFilterFn] = useState({ fn: items => { return items; } })
-    // const [openPopup, setOpenPopup] = useState(false)
-
     function formatDate(date) {
         const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(date).toLocaleDateString('en-US', options);
