@@ -38,7 +38,7 @@ const DisplayMap = ({ tasks }) => {
       mapInstance.current.addLayer(layerRef.current);
     }
   }, [])
- //test git 
+ 
   useEffect(() => {
     if (mapInstance.current) {
       layerRef.current.getSource().clear();
