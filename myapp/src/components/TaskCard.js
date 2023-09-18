@@ -9,16 +9,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { green } from '@mui/material/colors';
 
-function TaskCard(props) {
-
-    const { task, onDelete, onEdit, onCompleteChange } = props;
-
+function formatDate(date) {
+    const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+}
+const TaskCard = ({ task, onDelete, onEdit, onCompleteChange}) => {
     const [completed, setCompleted] = useState(false);
-
-    function formatDate(date) {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        return new Date(date).toLocaleDateString('en-US', options);
-    }
 
     const handleComplete = () => {
         setCompleted(!completed);
@@ -52,6 +48,7 @@ function TaskCard(props) {
             </CardActions>
         </Card>
     );
-}
+};
 
 export default TaskCard;
+

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Tasks from './tasks/Tasks';
 import { makeStyles, CssBaseline, createTheme, ThemeProvider } from '@material-ui/core';
-import SideMenu from './components/SideMenu';
-import Admin from './tasks/Admin';
 import ScrollToBottomButton from './components/ScrollToBottom';
-import OpenLayersMap from './components/OpenLayersMap';
-import { TaskProvider  } from './tasks/TaskContext';
+import { TaskProvider } from './tasks/TaskContext';
+
+const useStyles = makeStyles({
+  appMain: {
+    width: '100%',
+  }
+})
 
 const theme = createTheme({
   palette: {
@@ -39,36 +42,19 @@ const theme = createTheme({
   }
 })
 
-const useStyles = makeStyles({
-  appMain: {
-    paddingLeft: '320px',
-    width: '80%',
-  }
-})
-
 const App = () => {
   const classes = useStyles();
 
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  const handleTabChange = (index) => {
-    setSelectedTab(index);
-  };
-
   return (
-    <ThemeProvider theme = { theme }>
+    <ThemeProvider theme={theme}>
       <TaskProvider>
-      <div className = { classes.appMain }>
-        <SideMenu
-          onTabChange = { handleTabChange }
-        />
-        { selectedTab == 0 ? <Tasks /> : <Admin /> }
-        
-        <ScrollToBottomButton />
-      </div>
+        <div className={classes.appMain}>
+          <Tasks />
+          <ScrollToBottomButton />
+        </div>
       </TaskProvider>
     </ThemeProvider>
   )
-}
+};
 
 export default App;

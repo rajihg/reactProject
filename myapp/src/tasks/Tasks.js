@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import TasksForm from './TasksForm'
 import Popup from '../components/Popup';
-import { Paper, makeStyles, Toolbar, InputAdornment, Card, Typography, CardContent } from '@material-ui/core';
+import { Paper, makeStyles, Toolbar, InputAdornment } from '@material-ui/core';
 import Button from '../components/Button';
 import * as taskService from '../services/taskService';
 import { Search } from "@material-ui/icons";
@@ -9,9 +9,9 @@ import SearchBox from '../components/SearchBox';
 import AddIcon from '@material-ui/icons/Add';
 import PageHeader from '../components/PageHeader';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import useCard from '../components/useCard';
 import TaskCard from '../components/TaskCard';
 import DisplayMap from '../components/DisplayMap';
+import useTaskLogic from '../utils/useTaskLogic';
 import { useTaskContext } from './TaskContext';
 
 const useStyles = makeStyles(theme => ({
@@ -35,69 +35,21 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function Tasks() {
+const Tasks = () => {
   const classes = useStyles();
-  
+
   const {
+    addOrEdit,
+    deleteTask,
+    onCompleteChange,
+    handleSearch,
+    openInPopup,
     records,
-    setRecords,
     openPopup,
     setOpenPopup,
     recordForEdit,
     setRecordForEdit,
-    filterFn,
-    setFilterFn,
-  } = useTaskContext();
-
-  const {
-    getTasks
-  } = useCard(records, filterFn);
-
-   const addOrEdit = (task, resetForm) => {
-    if (task.id == '0') {
-      taskService.insertTask(task);
-    }
-    else {
-      taskService.updateTask(task);
-    }
-    resetForm();
-    setRecordForEdit(null);
-    setOpenPopup(false);
-    setRecords(taskService.getAllTasks());
-  }
-
-  const deleteTask = (task) => {
-    taskService.deleteTask(task);
-    setRecords(taskService.getAllTasks());
-  }
-
-  const onCompleteChange = (taskId, newCompleted) => {
-    const updatedRecords = records.map(task => {
-      if (task.id == taskId) {
-        return { ...task, isCompleted: newCompleted ? 1 : 0 }
-      }
-      return task;
-    })
-
-    setRecords(updatedRecords);
-  }
-
-  const handleSearch = e => {
-    let target = e.target;
-    setFilterFn({
-      fn: items => {
-        if (target.value == "")
-          return items;
-        else
-          return items.filter(x => x.taskName.toLowerCase().includes(target.value))
-      }
-    })
-  }
-
-  const openInPopup = item => {
-    setRecordForEdit(item)
-    setOpenPopup(true);
-  }
+  } = useTaskLogic();
 
   return (
     <>
@@ -123,16 +75,19 @@ export default function Tasks() {
             variant="outlined"
             startIcon={<AddIcon />}
             className={classes.newButton}
-            onClick={() => { setOpenPopup(true); setRecordForEdit(null) }}
+            onClick={() => {
+              setOpenPopup(true)
+              setRecordForEdit(null)
+            }}
           />
         </Toolbar>
       </Paper >
       <div className={classes.cardWrapper}>
         {
-          getTasks().map(item => (
+          taskService.getAllTasks().map(task => (
             <TaskCard
-              key={item.id}
-              task={item}
+              key={task.id}
+              task={task}
               onDelete={deleteTask}
               onEdit={openInPopup}
               onCompleteChange={onCompleteChange}
@@ -143,6 +98,7 @@ export default function Tasks() {
       <div style={{ flex: 1 }}>
         <DisplayMap tasks={records} />
       </div>
+
       <Popup
         title='New Task Form'
         openPopup={openPopup}
@@ -155,4 +111,6 @@ export default function Tasks() {
       </Popup>
     </>
   )
-}
+};
+
+export default Tasks;

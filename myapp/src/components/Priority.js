@@ -51,11 +51,8 @@ IconContainer.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function CustomizedRatings(props) {
+const CustomizedRatings = ({ name, value, label, onChange }) => 
 
-  const { name, value, label, onChange } = props;
-
-  return (
     <div >
       <Box component="fieldset" mb={3} borderColor="transparent" >
         <Typography component="legend">Priority</Typography>
@@ -67,6 +64,6 @@ export default function CustomizedRatings(props) {
           defaultValue={2} max={10} />
       </Box>
     </div>
-  );
-}
+
+export default CustomizedRatings;
 
