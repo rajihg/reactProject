@@ -23,10 +23,8 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function PageHeader(props) {
+const PageHeader = ({ title, subTitle, icon }) => {
     const classes = useStyles();
-
-    const { title, subTitle, icon } = props;
 
     return (
         <Paper elevation={0} square className={classes.root}>
@@ -47,4 +45,6 @@ export default function PageHeader(props) {
             </div>
         </Paper>
     )
-}
+};
+
+export default PageHeader;

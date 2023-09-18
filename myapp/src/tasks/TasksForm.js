@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid'
 import DatePicker from '../components/DatePicker';
-import { useForm, Form } from '../components/useForm';
+import { useForm, Form } from '../utils/useForm';
 import Button from '../components/Button';
 import Priority from '../components/Priority'
 import Subject from '../components/Subject';
@@ -14,13 +14,11 @@ const initialValues = {
     taskSubject: '',
     myPriority: 5,
     myDate: new Date(),
-    taskLocation: null,
+    taskLocation: [0, 0],
     isCompleted: 0,
 };
 
-export default function TasksForm(props) {
-    const { addOrEdit, recordForEdit } = props;
-
+const TasksForm = ({ addOrEdit, recordForEdit }) => {
     const {
         values,
         setValues,
@@ -33,10 +31,7 @@ export default function TasksForm(props) {
         resetForm();
     }
 
-    const onClick = (subject) => {
-        console.log(`Subject clicked: ${subject}`);
-        setValues({ ...values, taskSubject: subject });
-    }
+    const onClick = (subject) => setValues({ ...values, taskSubject: subject });
 
     useEffect(() => {
         if (recordForEdit != null)
@@ -45,9 +40,7 @@ export default function TasksForm(props) {
             })
     }, [recordForEdit])
 
-    const handleLocationSelected = (location) => {
-        setValues(prevValues => ({ ...prevValues, taskLocation: location }));
-    };
+    const handleLocationSelected = (location) => setValues(prevValues => ({ ...prevValues, taskLocation: location }));
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -78,17 +71,19 @@ export default function TasksForm(props) {
                     />
                     <Subject
                         onClick={onClick}
-                        onChange={handleInputChange}
+                        values={values}
                     />
                 </Grid>
                 <OpenLayersMap onLocationSelected={handleLocationSelected} />
 
                 <div>
-                    <Button  text="Create" type="submit" />
+                    <Button text="Create" type="submit" />
 
                     <Button text='Reset' color='default' onClick={resetForm} />
                 </div>
             </Grid>
         </Form>
     )
-}
+};
+
+export default TasksForm;

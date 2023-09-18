@@ -1,31 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from "@material-ui/core";
 
-export function useForm(initialFValues, validateOnChange = false) {
-
-    const [values, setValues] = useState(initialFValues);
-
-    const handleInputChange = e => {
-        const { name, value } = e.target;
-        console.log(value)
-        setValues({
-            ...values,
-            [name]: value
-        })
-    };
-
-    const resetForm = () => {
-        setValues(initialFValues);
-    }
-
-    return {
-        values,
-        setValues,
-        handleInputChange,
-        resetForm,
-    }
-}
-
 const useStyles = makeStyles(theme => ({
     root: {
         '& .MuiFormControl-root': {
@@ -47,3 +22,26 @@ export function Form(props) {
     )
 }
 
+export function useForm(initialFValues, validateOnChange = false) {
+
+    const [values, setValues] = useState(initialFValues);
+
+    const handleInputChange = e => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value
+        })
+    };
+
+    const resetForm = () => {
+        setValues(initialFValues);
+    }
+
+    return {
+        values,
+        setValues,
+        handleInputChange,
+        resetForm,
+    }
+};

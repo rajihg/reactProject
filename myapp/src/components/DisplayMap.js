@@ -10,13 +10,35 @@ import LocationPin  from '../images/marker-icon.png';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import * as ReactDOM from 'react-dom';
-import './DisplayMap.css';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles(theme => ({
+  popupContainerStyle: {
+    width: '100%',
+    height: '600px',
+    position: 'relative',
+  },
+  popupContentStyle: {
+    backgroundColor: 'white',
+    border: '1px solid #ccc',
+    padding: '10px',
+    boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+    maxWidth: '300px',
+  },
+  strongStyle: {
+    display: 'block',
+    fontWeight: 'bold',
+    marginBottom: '8px',
+  },
+}))
 
 const DisplayMap = ({ tasks }) => {
+  const classes = useStyles();
+
   const mapRef = useRef(null);
   const layerRef = useRef(null);
   const mapInstance = useRef(null);
-  const overlayRef = useRef(null);
+  const viewlayRef = useRef(null);
 
   useEffect(() => {
     if (!mapInstance.current) {
@@ -38,7 +60,7 @@ const DisplayMap = ({ tasks }) => {
       mapInstance.current.addLayer(layerRef.current);
     }
   }, [])
- //test git 
+ 
   useEffect(() => {
     if (mapInstance.current) {
       layerRef.current.getSource().clear();
@@ -78,31 +100,31 @@ const DisplayMap = ({ tasks }) => {
               task.taskLocation[0] === coordinates[0] && task.taskLocation[1] === coordinates[1]
           );
           if (taskDetails) {
-            if (!overlayRef.current) {
-                overlayRef.current = new Overlay({
+            if (!viewlayRef.current) {
+                viewlayRef.current = new Overlay({
                 element: document.createElement('div'),
                 positioning: 'top-center',
                 offset: [0, -15],
               });
 
-              mapInstance.current.addOverlay(overlayRef.current);
+              mapInstance.current.addOverlay(viewlayRef.current);
             }
             
             const popupContent = (
-              <div className="popup-content">
-                <strong>Task Details</strong>
+              <div className={classes.popupContentStyle}>
+                <div className={classes.strongStyle}>Task Details</div>
                 <p>Task Name: { taskDetails.taskName }</p>
                 <p>Task Subject: { taskDetails.taskSubject }</p>
               </div>
             );
 
-            ReactDOM.render(popupContent, overlayRef.current.getElement());
-            overlayRef.current.setPosition(coordinates);
+            ReactDOM.render(popupContent, viewlayRef.current.getElement());
+            viewlayRef.current.setPosition(coordinates);
           }
 
         } else {
-          if (overlayRef.current) {
-            overlayRef.current.setPosition(undefined);
+          if (viewlayRef.current) {
+            viewlayRef.current.setPosition(undefined);
           }
         }
       });
@@ -110,6 +132,7 @@ const DisplayMap = ({ tasks }) => {
   }, [tasks]);
 
   return <div ref={mapRef} style={{ width: '100%', height: '600px', paddingTop: '200px' }} />;
+
 };
 
 export default DisplayMap;

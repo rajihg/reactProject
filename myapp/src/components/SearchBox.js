@@ -1,11 +1,8 @@
 import React from 'react'
 import { TextField } from '@material-ui/core';
 
-export default function SearchBox(props) {
+const SearchBox = ({ name, label, value, error = null, onChange, ...other }) => 
 
-    const { name, label, value, error = null, onChange, ...other } = props;
-
-    return (
         <TextField
             variant="outlined"
             label={label}
@@ -15,5 +12,5 @@ export default function SearchBox(props) {
             {...other}
             {...(error && { error: true, helperText: error })}
         />
-    )
-}
+        
+export default SearchBox;

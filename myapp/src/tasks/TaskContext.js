@@ -29,4 +29,4 @@ export function TaskProvider({ children }) {
 
 export function useTaskContext() {
   return useContext(TaskContext);
-}
+};

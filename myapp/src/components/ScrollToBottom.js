@@ -2,15 +2,15 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
-const ScrollToBottomButton = () => {
-  const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth',
-    });
-  };
+const scrollToBottom = () => {
+  window.scrollTo({
+    top: document.documentElement.scrollHeight,
+    behavior: 'smooth',
+  });
+};
 
-  return (
+const ScrollToBottomButton = () => 
+
     <Button variant="contained" color="primary" onClick={scrollToBottom} sx={{
       position: 'fixed',
       bottom: '20px',
@@ -27,7 +27,6 @@ const ScrollToBottomButton = () => {
     }}>
       <ArrowDownwardIcon />
     </Button>
-  );
-};
+
 
 export default ScrollToBottomButton;
